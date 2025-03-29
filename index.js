@@ -4,8 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const dobInput = document.getElementById("dob");
     const ageError = document.getElementById("age-error");
 
-    // Clear table on page refresh
-    localStorage.removeItem("formData");
+    // Load stored data from localStorage
+    let storedData = JSON.parse(localStorage.getItem("formData")) || [];
+    storedData.forEach(addRowToTable); // Populate table with stored data
 
     function validateDOB(dob) {
         let birthDate = new Date(dob);
@@ -30,6 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
         } else ageError.style.display = "none";
 
         let formData = { name, email, password, dob, acceptedTerms };
+        
+        // Add new data to storedData array
+        storedData.push(formData);
+        localStorage.setItem("formData", JSON.stringify(storedData)); // Save to localStorage
 
         addRowToTable(formData);
         form.reset();
